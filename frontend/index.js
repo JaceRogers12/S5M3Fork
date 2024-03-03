@@ -3,8 +3,16 @@ function moduleProject3() {
   // 👉 TASK 1 - Write a `buildNav` component that returns a nav
 
   function buildNav(links) {
-    //  ✨ do your magic here
-    return document.createElement('nav')
+    let newNav = document.createElement('nav');
+    links.forEach(obj => {
+      let {href, textContent, title} = obj;
+      let newLink = document.createElement("a");
+      newLink.href = href;
+      newLink.textContent = textContent;
+      newLink.title = title;
+      newNav.appendChild(newLink)
+    })
+    return newNav;
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -19,8 +27,36 @@ function moduleProject3() {
   // 👉 TASK 2A - Write a `buildLearnerCard` component that returns a card
 
   function buildLearnerCard(learner, languages) {
-    //  ✨ do your magic here
+    let newCard = document.createElement("div");
+    let newName = document.createElement("p");
+    let newId = document.createElement("p");
+    let newBirth = document.createElement("p");
+    let newLanguage = document.createElement("p");
+    newCard.appendChild(newName);
+    newCard.appendChild(newId);
+    newCard.appendChild(newBirth);
+    newCard.appendChild(newLanguage);
+    newCard.classList.add("learner-card");
+    newName.textContent = learner.fullName;
+    newId.textContent = `Learner ID: ${learner.id}`;
+    newBirth.textContent = `Date of Birth: ${learner.dateOfBirth}`;
+    function findLang(num) {
+      let result;
+      languages.forEach(obj => {
+        if (obj.id === num) {
+          result = obj.name;
+        };
+      });
+      return result;
+    };
+    newLanguage.textContent = `Favorite Language: ${findLang(learner.favLanguage)}`;
+    newCard.addEventListener("click", ()=> {
+      newCard.classList.add("active");
+    })
+    return newCard;
   }
+
+
 
   {
     // 👉 TASK 2B - Use the two variables below to make learner Cards, and put them in the DOM
@@ -39,14 +75,61 @@ function moduleProject3() {
       { id: 41, fullName: 'Sabah Beydoun', dateOfBirth: '1988-03-25', favLanguage: 91 },
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
-    //  ✨ do your magic here
+
+    let learnerCards = learners.map(learner => buildLearnerCard(learner, languages))
+    learnerCards.forEach(card => document.querySelector("section").appendChild(card))
+    document.querySelector("section").addEventListener("click", () => {
+      let activeCard = document.querySelector(".active")
+      if (activeCard) {activeCard.classList.remove("active")}
+    }, capture = true)
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
-    //  ✨ do your magic here
-    return document.createElement('footer')
+    let {companyName, address, contactEmail, socialMedia} = footerData
+    let {twitter, facebook, instagram} = socialMedia
+    let newFooter = document.createElement('footer')
+    let companyDiv = document.createElement("div")
+    let socialDiv = document.createElement("div")
+    let newName = document.createElement("p")
+    let newAddress = document.createElement("p")
+    let newEmail = document.createElement("p") 
+    let emailAnchor = document.createElement("a")
+    let newTwitter = document.createElement("a")
+    let newFacebook = document.createElement("a")
+    let newInstagram = document.createElement("a")
+    newFooter.appendChild(companyDiv)
+    newFooter.appendChild(socialDiv)
+    companyDiv.appendChild(newName)
+    companyDiv.appendChild(newAddress)
+    companyDiv.appendChild(newEmail)
+    newEmail.insertAdjacentElement("afterend", emailAnchor)
+    socialDiv.appendChild(newTwitter)
+    socialDiv.appendChild(newFacebook)
+    socialDiv.appendChild(newInstagram)
+    companyDiv.classList.add("company-info")
+    socialDiv.classList.add("social-media")
+    newName.classList.add("company-name")
+    newAddress.classList.add("address")
+    newEmail.classList.add("contact-email")
+    newName.textContent = companyName
+    newAddress.textContent = address
+    newEmail.textContent = `Email: `
+    newEmail.style.display = "inline"
+    emailAnchor.textContent = contactEmail
+    emailAnchor.href = `mailto: ${contactEmail}`
+    emailAnchor.style.display = "inline"
+    newTwitter.textContent = "Twitter"
+    newFacebook.textContent = "Facebook"
+    newInstagram.textContent = "Instagram"
+    newTwitter.href = twitter
+    newFacebook.href = facebook
+    newInstagram.href = instagram
+    let copyRight = document.createElement("div")
+    copyRight.textContent = `© ${companyName.toUpperCase()} 2024`
+    newFooter.appendChild(copyRight)
+    return newFooter
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
